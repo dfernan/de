@@ -1,0 +1,16 @@
+- Load a 'personal' genome to IGV
+http://www.broadinstitute.org/software/igv/LoadGenome - Loading a genome section
+
+- Load a 'personal' GTF to IGV (First transform GTF to personal genome coordinates)
+http://www.broadinstitute.org/software/igv/LoadGenome - Creating a .genome section
+
+- Load 'variants' (First transform VCF to personal genome coordinates)
+
+- Load 'avg' coverage per 'variant' in IGV
+http://www.broadinstitute.org/software/igv/node/269
+http://genome.ucsc.edu/FAQ/FAQformat.html#format13
+
+- Produce snapshots of such loaded files automatically in IGV (reduce introns sizes when producing the snapshots)
+http://www.broadinstitute.org/software/igv/batch
+For exome-only view:
+http://www.broadinstitute.org/software/igv/download_snapshot
