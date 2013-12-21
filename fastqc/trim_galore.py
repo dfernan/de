@@ -2,10 +2,10 @@
 
 # Import modules
 import subprocess, sys, os, glob, optparse, csv
-sys.path.append('/seq/epigenome01/allelix/rusty/auto_homer/myos/')
+script_path = os.path.dirname(__file__)
+myos_path = os.path.join(script_path, '../myos')
+sys.path.append(myos_path)
 from myos import *
-#SCRIPTS = '${de}scripts/nimrod/'
-SCRIPTS = '/seq/epiprod/de/scripts/nimrod/'
 dependencies_list = ['.fastx-toolkit-0.0.13', '.fastqc-0.10.1']
 
 def read_experiment_names(doe_csv, in_dir, extension_name):
