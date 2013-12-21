@@ -53,30 +53,38 @@ def remove_all_files_given_dir(dir):
   return 0
 
 
-def create_bsub_string(logs_dir, job_name, out_log_fn=os.path.join(logs_dir, job_name+'.out'), err_log_fn=os.path.join(logs_dir, job_name+'.err'), qname = 'week', mem_usage = 'default'):
-  if os.popen('echo $USER').read().strip() == 'dfernand':
+def create_bsub_string_rm_logs_dir(logs_dir, job_name, out_log_fn='', err_log_fn='', qname = 'week', mem_usage = 'default'):
+    if out_log_fn == '':
+        out_log_fn = os.path.join(logs_dir, job_name+'.out')
+    if err_log_fn == '':
+        err_log_fn = os.path.join(logs_dir, job_name+'.err')
+    if os.popen('echo $USER').read().strip() == 'dfernand':
+        if mem_usage == 'default':
+            s = 'bsub -P epigenome -q %s -J %s -o %s -e %s' %(qname, job_name, out_log_fn, err_log_fn)
+        else:
+            s = 'bsub -P epigenome -R "rusage[mem=%s]" -q %s -J %s -o %s -e %s' %(mem_usage, qname, job_name, out_log_fn, err_log_fn)
+    elif os.popen('echo $USER').read().strip() == 'fernandez':
+        s = 'sbatch -J %s -o %s -e %s -p general' %(job_name, out_log_fn, err_log_fn)
+    check_if_directory_exists_create_it(logs_dir)
+    remove_all_files_given_dir(logs_dir)
+    erase_file_if_exists(out_log_fn)
+    erase_file_if_exists(err_log_fn)
+    return s
+
+
+def create_bsub_string_no_rm_logs_dir(logs_dir, job_name, out_log_fn='', err_log_fn='', qname = 'week', mem_usage = 'default'):
+    if out_log_fn == '':
+        out_log_fn = os.path.join(logs_dir, job_name+'.out')
+    if err_log_fn == '':
+        err_log_fn = os.path.join(logs_dir, job_name+'.err')
     if mem_usage == 'default':
         s = 'bsub -P epigenome -q %s -J %s -o %s -e %s' %(qname, job_name, out_log_fn, err_log_fn)
     else:
         s = 'bsub -P epigenome -R "rusage[mem=%s]" -q %s -J %s -o %s -e %s' %(mem_usage, qname, job_name, out_log_fn, err_log_fn)
-  elif os.popen('echo $USER').read().strip() == 'fernandez':
-    s = 'sbatch -J %s -o %s -e %s -p general' %(job_name, out_log_fn, err_log_fn)
-  check_if_directory_exists_create_it(logs_dir)
-  remove_all_files_given_dir(logs_dir)
-  erase_file_if_exists(out_log_fn)
-  erase_file_if_exists(err_log_fn)
-  return s
-
-
-def create_bsub_string_no_remove(logs_dir, job_name, out_log_fn, err_log_fn, qname = 'week', mem_usage = 'default'):
-  if mem_usage == 'default':
-    s = 'bsub -P epigenome -q %s -J %s -o %s -e %s' %(qname, job_name, out_log_fn, err_log_fn)
-  else:
-    s = 'bsub -P epigenome -R "rusage[mem=%s]" -q %s -J %s -o %s -e %s' %(mem_usage, qname, job_name, out_log_fn, err_log_fn)
-  check_if_directory_exists_create_it(logs_dir)
-  erase_file_if_exists(out_log_fn)
-  erase_file_if_exists(err_log_fn)
-  return s
+    check_if_directory_exists_create_it(logs_dir)
+    erase_file_if_exists(out_log_fn)
+    erase_file_if_exists(err_log_fn)
+    return s
 
 
 def create_bsub_string_no_remove_matlab(logs_dir, job_name, out_log_fn, err_log_fn, qname = 'week', mem_usage = 'default'):

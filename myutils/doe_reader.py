@@ -1,6 +1,6 @@
 # This module is used to read csv files containing a specific set of experiments
 
-import os, sys
+import csv, os, sys
 
 def index_in_unique_list(lst, a):
     ''' returns the index of where element a is present in lst 
@@ -43,7 +43,7 @@ def create_experiment_fns(doe_csv, header_name_of_exp_id, in_dir, extension_name
         header_index_of_exp_id = index_in_unique_list(headers, header_name_of_exp_id)
         for row in reader:
             exp_id = row[header_index_of_exp_id]
-            field_dict[exp_id] = os.path.join(in_dir, exp_id+'.'+extension_name)
+            field_dict[exp_id] = os.path.join(in_dir, exp_id+extension_name)
     return field_dict
 
 def read_experiment_ids(doe_csv, header_name_of_exp_id):
