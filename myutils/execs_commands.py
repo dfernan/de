@@ -47,8 +47,8 @@ def fastqc(input_fns, output_dir):
     if server == 'broad':
       en = 'perl /broad/software/free/Linux/redhat_5_x86_64/pkgs/fastqc_0.10.1/FastQC/fastqc'
     elif server == 'odyssey':
-      en = 'perl /n/dulacfs2/Public/de/software/FastQC/fastqc'
-    cmd = 'cd %s;%s %s' %(output_dir, en, input_fns)
+      en = 'perl /n/dulacfs2/Users/dfernand/de/software/FastQC/fastqc'
+    cmd = '%s -o %s %s' %(en, output_dir, input_fns)
     return cmd
 
 def trim_galore_filter(adapter_seq, options, input_fn, output_dir):
