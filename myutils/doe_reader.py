@@ -1,18 +1,9 @@
 # This module is used to read csv files containing a specific set of experiments
 
 import csv, os, sys
-
-def index_in_unique_list(lst, a):
-    ''' returns the index of where element a is present in lst 
-        Assumption: lst is a list with ONLY unique elements
-    '''
-    if len(lst)!=len(set(lst)):
-        print 'error: list is not unique'
-        return 'error'
-    else:
-        tmp = [i for i, x in enumerate(lst) if x==a]
-        res = tmp[0]
-    return res
+script_path = os.path.dirname(__file__)
+sys.path.append(script_path)
+import general
 
 def read_experiment_field(doe_csv, header_name_of_exp_id, header_name):
     ''' this function takes a doe_csv fullname, opens the file,
@@ -23,8 +14,8 @@ def read_experiment_field(doe_csv, header_name_of_exp_id, header_name):
     with open(doe_csv,'rb') as csvfile:
         reader = csv.reader(csvfile)
         headers = reader.next()
-        header_index_of_exp_id = index_in_unique_list(headers, header_name_of_exp_id)
-        header_index_of_header_name = index_in_unique_list(headers, header_name)
+        header_index_of_exp_id = general.index_in_unique_list(headers, header_name_of_exp_id)
+        header_index_of_header_name = general.index_in_unique_list(headers, header_name)
         for row in reader:
             exp_id = row[header_index_of_exp_id]
             field_value = row[header_index_of_header_name]
@@ -40,7 +31,7 @@ def create_experiment_fns(doe_csv, header_name_of_exp_id, in_dir, extension_name
     with open(doe_csv,'rb') as csvfile:
         reader = csv.reader(csvfile)
         headers = reader.next()
-        header_index_of_exp_id = index_in_unique_list(headers, header_name_of_exp_id)
+        header_index_of_exp_id = general.index_in_unique_list(headers, header_name_of_exp_id)
         for row in reader:
             exp_id = row[header_index_of_exp_id]
             field_dict[exp_id] = os.path.join(in_dir, exp_id+extension_name)

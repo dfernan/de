@@ -17,7 +17,7 @@ def run_fastqc(doe_csv_fn, out_dir, logs_dir, header_name_of_in_fn, extension_na
     if extension_name is not None:
       dict_fq_fns = doe_reader.create_experiment_fns(doe_csv_fn, 'name', out_dir, extension_name)
     elif header_name_of_in_fn is not None:
-      dict_fq_fns = doe_reader. read_experiment_field(doe_csv_fn, 'name', header_name_of_in_fn)
+      dict_fq_fns = doe_reader.read_experiment_field(doe_csv_fn, 'name', header_name_of_in_fn)
     out_dir = out_dir
     dep_cmd = myos.load_dependencies_cmd(dependencies_list)
     dep_cmd = dep_cmd+'reuse .fastqc-0.10.1;'

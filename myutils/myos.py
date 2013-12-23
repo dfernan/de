@@ -76,6 +76,8 @@ def which_server():
     return 'odyssey'
 
 def create_bsub_string_rm_logs_dir(logs_dir, job_name, out_log_fn='', err_log_fn='', qname = 'week', mem_usage = 'default'):
+    ''' create a bsub/sbatch string command, creates the directory for logs if it doesn't exist, and 
+    erase the out_log_fn, and err_log_fn.  Note: it REMOVES all the file in the directory even if they are other logs '''
     if out_log_fn == '':
         out_log_fn = os.path.join(logs_dir, job_name+'.out')
     if err_log_fn == '':
@@ -98,6 +100,8 @@ def create_bsub_string_rm_logs_dir(logs_dir, job_name, out_log_fn='', err_log_fn
     return s
 
 def create_bsub_string_no_rm_logs_dir(logs_dir, job_name, out_log_fn='', err_log_fn='', qname = 'week', mem_usage = 'default'):
+    ''' create a bsub/sbatch string command, creates the directory for logs if it doesn't exist, and 
+    erase the out_log_fn, and err_log_fn.  Note: it does not remove all the files in the directory '''
     if out_log_fn == '':
         out_log_fn = os.path.join(logs_dir, job_name+'.out')
     if err_log_fn == '':
