@@ -12,6 +12,11 @@ import pysam
 
 # Define functions
 
+def basename_no_ext(fullname):
+  ''' returns the basename with no extension 
+  i.e.. input: /foo/bar/basename.ext output: basename'''
+  return os.path.splitext(os.path.basename(fullname))[0]
+
 def bufcount(fullname):
     ''' count number of lines in a file, slower than wccount 
     No good for v large files, too much mem requirement

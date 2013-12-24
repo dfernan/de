@@ -27,7 +27,9 @@ def run_trim_galore(logs_dir, out_dir, doe_csv_fn, header_name_of_in_fn, header_
         read_length = int(dict_read_length[exp_name])
         bsubcmd = myos.create_bsub_string_no_rm_logs_dir(logs_dir, exp_name, qname = qname, mem_usage = mem_usage)
         runcmd_tgf = execs_commands.trim_galore_filter(adapter_seq, trim_galore_options+' --length %s' %(read_length-clip_R1_value-rm_shorter_than_space), in_fn, out_dir)
-        fullcmd = bsubcmd+'\"'+runcmd_tgf+'\"'
+        mv_fq_cmd = 'mv %s %s' %(os.path.join(out_dir, os.path.basename(in_fn))+'_trimmed.fq', os.path.join(out_dir, exp_name+'.fq'))
+        mv_report_cmd = 'mv %s %s' %(os.path.join(out_dir, os.path.basename(in_fn))+'_trimming_report.txt', os.path.join(out_dir, exp_name+'.report'))
+        fullcmd = bsubcmd+'\"'+runcmd_tgf+';'+mv_fq_cmd+';'+mv_report_cmd+'\"'
         print fullcmd
         #os.system(fullcmd)
     return 0
