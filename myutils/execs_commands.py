@@ -93,12 +93,12 @@ class igvtools:
            self.igv_fn = '/broad/software/free/Linux/redhat_5_x86_64/pkgs/igvtools_2.1.7/IGVTools/igvtools.jar'
         elif self.server == 'odyssey':
             self.dep_cmd = myos.load_dependencies_cmd(['bio/igvtools-2.2.2'])
-            self.fn = '/n/sw/igvtools-2.2.2/igvtools.jar'
+            self.igv_fn = '/n/sw/igvtools-2.2.2/igvtools.jar'
     def index(self, in_fn):
         java_cmd = start_java_cmd('3000', '-Djava.awt.headless=true')
-        en = '%s %s index %s' %(java_cmd, self.fn, in_fn)
+        en = '%s %s index %s' %(java_cmd, self.igv_fn, in_fn)
         return self.dep_cmd+en
     def sort(self, in_fn, sort_fn):
         java_cmd = start_java_cmd('3000', '-Djava.awt.headless=true')
-        en = '%s %s sort %s %s' %(java_cmd, self.fn, in_fn, sort_fn)
+        en = '%s %s sort %s %s' %(java_cmd, self.igv_fn, in_fn, sort_fn)
         return self.dep_cmd+en
