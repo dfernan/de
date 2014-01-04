@@ -184,3 +184,9 @@ def load_dependencies_cmd(dependencies_list):
       for dep in dependencies_list:
           cmd += 'module load %s;' %(dep)
     return cmd
+
+def write_fullcmd(fullcmd, logs_dir, job_name):
+    f = open(os.path.join(logs_dir, job_name+'.fullcmd'), 'w')
+    f.write(fullcmd)
+    f.close()
+    return 0

@@ -60,10 +60,10 @@ def trim_galore_filter(adapter_seq, options, input_fn, output_dir):
     server = myos.which_server()
     if server == 'broad':
       en = '/home/unix/dfernand/bin/trim_galore/trim_galore'
-      cmd = 'cd %s; %s -a %s %s %s' %(output_dir, en, adapter_seq, options, input_fn)
+      cmd = '%s -o %s -a %s %s %s' %(en, output_dir, adapter_seq, options, input_fn)
     elif server == 'odyssey':
       en = '/n/dulacfs2/Users/dfernand/de/software/trim_galore_v0.3.3/trim_galore'
-      cmd = 'module load centos6/cutadapt-1.2.1_python-2.7.3; cd %s; %s -a %s %s %s' %(output_dir, en, adapter_seq, options, input_fn)
+      cmd = 'module load centos6/cutadapt-1.2.1_python-2.7.3;%s -o %s -a %s %s %s' %(en, output_dir, adapter_seq, options, input_fn)
     return cmd
 
 def bowtie_1_run(options, index_fn, input_fn, output_fn):

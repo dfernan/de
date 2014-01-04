@@ -10,7 +10,7 @@ import general
 import doe_reader
 import execs_commands 
 
-def run_trim_galore(logs_dir, out_dir, doe_csv_fn, header_name_of_in_fn, header_name_of_adapter_seq, header_name_of_read_length, trim_galore_options, rm_shorter_than_space):
+def run_trim_galore(logs_dir, out_dir, doe_csv_fn, header_name_of_in_fn, header_name_of_adapter_seq, header_name_of_read_length, trim_galore_options, rm_shorter_than_space, tissue):
     trim_galore_options_list = trim_galore_options.split(' ')
     clip_R1_value_index = general.index_in_unique_list(trim_galore_options_list, '--clip_R1')+1
     print trim_galore_options_list[clip_R1_value_index]
@@ -25,13 +25,12 @@ def run_trim_galore(logs_dir, out_dir, doe_csv_fn, header_name_of_in_fn, header_
     for exp_name, in_fn in dict_fq_fns.iteritems():
         adapter_seq = dict_adapter_seq[exp_name]
         read_length = int(dict_read_length[exp_name])
-        bsubcmd = myos.create_bsub_string_no_rm_logs_dir(logs_dir, exp_name, qname = qname, mem_usage = mem_usage)
+        bsubcmd = myos.create_bsub_string_no_rm_logs_dir(logs_dir, exp_name+'_'+tissue, qname = qname, mem_usage = mem_usage)
         runcmd_tgf = execs_commands.trim_galore_filter(adapter_seq, trim_galore_options+' --length %s' %(read_length-clip_R1_value-rm_shorter_than_space), in_fn, out_dir)
-        mv_fq_cmd = 'mv %s %s' %(os.path.join(out_dir, os.path.basename(in_fn))+'_trimmed.fq', os.path.join(out_dir, exp_name+'.fq'))
-        mv_report_cmd = 'mv %s %s' %(os.path.join(out_dir, os.path.basename(in_fn))+'_trimming_report.txt', os.path.join(out_dir, exp_name+'.report'))
-        fullcmd = bsubcmd+'\"'+runcmd_tgf+';'+mv_fq_cmd+';'+mv_report_cmd+'\"'
+        fullcmd = bsubcmd+'\"'+runcmd_tgf+'\"'
         print fullcmd
-        #os.system(fullcmd)
+        myos.write_fullcmd(fullcmd, logs_dir, exp_name+'_'+tissue)
+        os.system(fullcmd)
     return 0
 
 def main():
@@ -44,8 +43,9 @@ def main():
     parser.add_option('-e', '--header_name_of_read_length', default = None, action = "store")
     parser.add_option('-r', '--rm_shorter_than_space', action = "store", help = "remove reads that after trimming are shorter than read_length - clip_R1 - rm_shorter_than_space") 
     parser.add_option('--trim_galore_options', action = "store", help = "options as a string i.e., --trim_galore_options='--clip_R1 14 --phred33 --stringency 5 -q 20 -e 0.05'")
+    parser.add_option('--tissue', action = "store")
     (options, args) = parser.parse_args()
-    run_trim_galore(options.logs_dir, options.out_dir, options.doe_csv, options.header_name_of_in_fn, options.header_name_of_adapter_seq, options.header_name_of_read_length, options.trim_galore_options, int(options.rm_shorter_than_space))
+    run_trim_galore(options.logs_dir, options.out_dir, options.doe_csv, options.header_name_of_in_fn, options.header_name_of_adapter_seq, options.header_name_of_read_length, options.trim_galore_options, int(options.rm_shorter_than_space), options.tissue)
     return 0
 
 if __name__ == "__main__":
