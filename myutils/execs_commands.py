@@ -60,10 +60,10 @@ def trim_galore_filter(adapter_seq, options, input_fn, output_dir):
     server = myos.which_server()
     if server == 'broad':
       en = '/home/unix/dfernand/bin/trim_galore/trim_galore'
-      cmd = 'cd %s; %s -a %s %s %s' %(output_dir, en, adapter_seq, options, input_fn)
+      cmd = '%s -o %s -a %s %s %s' %(en, output_dir, adapter_seq, options, input_fn)
     elif server == 'odyssey':
       en = '/n/dulacfs2/Users/dfernand/de/software/trim_galore_v0.3.3/trim_galore'
-      cmd = 'module load centos6/cutadapt-1.2.1_python-2.7.3; cd %s; %s -a %s %s %s' %(output_dir, en, adapter_seq, options, input_fn)
+      cmd = 'module load centos6/cutadapt-1.2.1_python-2.7.3;%s -o %s -a %s %s %s' %(en, output_dir, adapter_seq, options, input_fn)
     return cmd
 
 def bowtie_1_run(options, index_fn, input_fn, output_fn):
@@ -72,6 +72,13 @@ def bowtie_1_run(options, index_fn, input_fn, output_fn):
     '''
     en = "/home/unix/dfernand/bin/bowtie-1.0.0/bowtie"
     cmd = "%s %s %s %s | samtools view -bS - | samtools sort -n - %s" %(en, options, index_fn, input_fn, output_fn)
+    return cmd
+
+def phasedBam2bed(bam_in_fn, bed_p_fn, bed_m_fn):
+    ''' command for nimrod executable phasedBam2bed 
+    '''
+    en = "/seq/epiprod/de/scripts/nimrod/samtoolsUtils/phasedBam2bed"
+    cmd = "%s -b %s -p %s -m %s" %(en, bam_in_fn, bed_p_fn, bed_m_fn)
     return cmd
 
 class bedops:
@@ -83,6 +90,9 @@ class bedops:
             self.dep_cmd = myos.load_dependencies_cmd(['centos6/bedops-2.3.0'])
     def vcf2bed(self, vcf_in_fn, vcf_out_fn):
         en = 'vcf2bed < %s > %s' %(vcf_in_fn, vcf_out_fn)
+        return self.dep_cmd+en
+    def bedmap(self, bedmap_options, reference_in_fn, map_fn, out_fn):
+        en = 'bedmap %s %s %s > %s' %(bedmap_options, reference_in_fn, map_fn, out_fn)
         return self.dep_cmd+en
             
 class igvtools:
