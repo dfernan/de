@@ -1,2 +1,0 @@
-INFO [2013-12-23 20:31:22,064] [MessageUtils.java:60]  <html>Files must be sorted by start position prior to indexing.<br>Input file is not sorted by start position. 
-We saw a record with a start of chr1:3206522 after a record with a start of chr1:3213608, for input source: /n/dulacfs2/Users/dfernand/de/refdata/annotation/kg.ensembl.retro.fnRDB.gtf<br><br>Note: igvtools can be used to sort the file, select "File > Run igvtools...".
