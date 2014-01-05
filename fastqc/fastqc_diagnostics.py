@@ -26,7 +26,7 @@ def run_fastqc(doe_csv_fn, out_dir, logs_dir, header_name_of_in_fn, extension_na
         runcmd = execs_commands.fastqc(in_fn, out_dir)
         fullcmd = bsubcmd+'\"'+runcmd+'\"'
         print fullcmd
-        #os.system(fullcmd)
+        os.system(fullcmd)
     return 0
 
 def main():
