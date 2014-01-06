@@ -1,3 +1,5 @@
+Conversation with Jacob Silterra.
+
 - Load a 'personal' genome to IGV
 http://www.broadinstitute.org/software/igv/LoadGenome - Loading a genome section
 
@@ -14,3 +16,17 @@ http://genome.ucsc.edu/FAQ/FAQformat.html#format13
 http://www.broadinstitute.org/software/igv/batch
 For exome-only view:
 http://www.broadinstitute.org/software/igv/download_snapshot
+
+
+Required Files for IGV
+
+- (customized GTF) Get a custom gtf, sort and index it.
+  E.g., /seq/epiprod/de/refdata/mm10/kg.ensembl.retro.fnRDB.gtf
+  Then sort it and index it with IGVTools
+  E.g., python igviz/igvtools_sort_index_wrapper.py -i /seq/epiprod/de/refdata/mm10/kg.ensembl.retro.fnRDB.gtf -x -s /seq/epiprod/de/refdata/mm10/kg.ensembl.retro.fnRDB.igvsort2.gtf -l /seq/epiprod/de/refdata/mm10/igvsortindex_logs
+- (customized VCF) Get a custom vcf, transform it to bed
+  E.g., /seq/epiprod/de/refdata/dbSNP/C57.CAST.vcf
+  (I first tried igvtools sort and index and got an error cause of lines w/o alt field so I run)
+  python filter_out_lines_VCF_noALT.py  (script in /seq/epiprod/de/refdata/dbSNP/)
+  Then convert sorted it:
+
