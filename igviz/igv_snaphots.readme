@@ -40,6 +40,15 @@ Required Files for IGV:
 - Get the AVG reads per SNP
   Here different averages could be taken.
   Case I.   single replicate.
-    
+  Map-count the maternal reads (sorted bed) to the VCF file using bedops
+  python bedmap_wrapper.py -r /seq/epiprod/de/refdata/dbSNP/C57.CAST.filternoALT.igvsort.vcf.bed -d /seq/epiprod/de/data/doe/tmp_and_rescue/doe_cerebellum_single_phasedBam.csv --header_name_of_exp_id name -i /broad/hptmp/de/data/FF1i1_ad/bam2bed -e .m.sorted.bed --bedmap_options='--faster --count --echo' -o /broad/hptmp/de/data/FF1i1_ad/bam2bed/bedmap -l /broad/hptmp/de/data/FF1i1_ad/bam2bed/bedmap_logs
+  Map-count the paternal reads (sorted bed) to the VCF file using bedops
+  python bedmap_wrapper.py -r /seq/epiprod/de/refdata/dbSNP/C57.CAST.filternoALT.igvsort.vcf.bed -d /seq/epiprod/de/data/doe/tmp_and_rescue/doe_cerebellum_single_phasedBam.csv --header_name_of_exp_id name -i /broad/hptmp/de/data/FF1i1_ad/bam2bed -e .p.sorted.bed --bedmap_options='--faster --count --echo' -o /broad/hptmp/de/data/FF1i1_ad/bam2bed/bedmap -l /broad/hptmp/de/data/FF1i1_ad/bam2bed/bedmap_logs
+  Count the Average Number of reads per SNP in maternal file
+  python avg_count_per_factor.py -d /seq/epiprod/de/data/doe/tmp_and_rescue/doe_cerebellum_single_phasedBam.csv --header_name_of_exp_id name --header_names_of_factors age -i /broad/hptmp/de/data/FF1i1_ad/bam2bed/bedmap -p m -e .sorted_mapped2_C57.CAST.filternoALT.igvsort.vcf.bedmap -o /broad/hptmp/de/data/FF1i1_ad/bam2bed/bedmap/avg_counts 
+  Count the Average Number of reads per SNP in paternal file
+  python avg_count_per_factor.py -d /seq/epiprod/de/data/doe/tmp_and_rescue/doe_cerebellum_single_phasedBam.csv --header_name_of_exp_id name --header_names_of_factors age -i /broad/hptmp/de/data/FF1i1_ad/bam2bed/bedmap -p p -e .sorted_mapped2_C57.CAST.filternoALT.igvsort.vcf.bedmap -o /broad/hptmp/de/data/FF1i1_ad/bam2bed/bedmap/avg_counts
+  Merge Paternal and Maternal counts into a single paternal/maternal bed file (paternal +, maternal -)
+  python merge_pat_mat_avg_counts.py 
   Case II.  cross, age
   Case III. age
