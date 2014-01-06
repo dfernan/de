@@ -49,11 +49,19 @@ def exit(self, status=0, message=None):
   sys.exit(status)
 
 def check_if_directory_exists_create_it(dir):
-  if not os.path.exists(dir):
-    try:
-      os.makedirs(dir)
-    except:
-      print('Could not create the dir %s' %(dir))
+  ''' Creates a directory ONLY IF one level up directory of dir 
+  already exists - to prevent creating a whole new directory who knows where 
+  '''
+  if dir[-1] == '/':
+    dir = dir[0:-1]
+  if os.path.exists(os.path.dirname(dir)):
+    if not os.path.exists(dir):
+      try:
+        os.makedirs(dir)
+      except:
+        print 'Could not create the dir %s' %(dir)
+  else:
+    print 'Could not create the dir %s, %s does not exists' %(dir, os.path.dirname(dir))
   return 0
 
 def erase_file_if_exists(fullname):
