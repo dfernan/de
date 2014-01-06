@@ -9,7 +9,7 @@ import myos
 import doe_reader
 import execs_commands 
 
-def run_phasedBam2bed(doe_csv, in_dir, out_dir, header_name_of_exp_id, extension, logs_dir):
+def run_phasedBam2bed(doe_csv, in_dir, out_dir, header_name_of_exp_id, extension, logs_dir, execute):
     qname = 'regevlab'
     mem_usage = '5000'
     if extension is not None:
@@ -23,7 +23,8 @@ def run_phasedBam2bed(doe_csv, in_dir, out_dir, header_name_of_exp_id, extension
         runcmd = execs_commands.phasedBam2bed(bam_in_fn, bed_p_fn, bed_m_fn)
         fullcmd = bsubcmd+'\"'+runcmd+'\"'
         print fullcmd
-        os.system(fullcmd)
+        if execute:
+            os.system(fullcmd)
     return 0
 
 def main():
@@ -34,8 +35,9 @@ def main():
     parser.add_option('--header_name_of_exp_id', action = "store")
     parser.add_option('-e', '--extension_after_exp_id', default = None, action = "store")
     parser.add_option('-l', '--logs_dir', action = "store")
+    parser.add_option('-x', '--execute', action = "store_true", default=False)
     (options, args) = parser.parse_args()
-    run_phasedBam2bed(options.doe_csv_fn, options.in_dir_bam_files, options.out_dir, options.header_name_of_exp_id, options.extension_after_exp_id, options.logs_dir)
+    run_phasedBam2bed(options.doe_csv_fn, options.in_dir_bam_files, options.out_dir, options.header_name_of_exp_id, options.extension_after_exp_id, options.logs_dir, options.execute)
     return 0
 
 if __name__ == "__main__":
