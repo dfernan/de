@@ -88,6 +88,12 @@ class bedops:
            self.dep_cmd = myos.load_dependencies_cmd(['.bedops-2.0.0b'])
         elif self.server == 'odyssey':
             self.dep_cmd = myos.load_dependencies_cmd(['centos6/bedops-2.3.0'])
+    def sortbed(self, bed_in_fn, bed_out_fn, options=''):
+        if options == '':
+            en = 'sort-bed %s > %s' %(bed_in_fn, bed_out_fn)
+        else:
+            en = 'sort-bed %s %s > %s' %(options, bed_in_fn, bed_out_fn)
+        return self.dep_cmd+en
     def vcf2bed(self, vcf_in_fn, vcf_out_fn):
         en = 'vcf2bed < %s > %s' %(vcf_in_fn, vcf_out_fn)
         return self.dep_cmd+en

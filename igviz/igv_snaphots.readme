@@ -18,15 +18,28 @@ For exome-only view:
 http://www.broadinstitute.org/software/igv/download_snapshot
 
 
-Required Files for IGV
+Required Files for IGV:
 
+- igviz scripts located at https://github.com/dfernan/de: igviz/
 - (customized GTF) Get a custom gtf, sort and index it.
   E.g., /seq/epiprod/de/refdata/mm10/kg.ensembl.retro.fnRDB.gtf
   Then sort it and index it with IGVTools
   E.g., python igviz/igvtools_sort_index_wrapper.py -i /seq/epiprod/de/refdata/mm10/kg.ensembl.retro.fnRDB.gtf -x -s /seq/epiprod/de/refdata/mm10/kg.ensembl.retro.fnRDB.igvsort2.gtf -l /seq/epiprod/de/refdata/mm10/igvsortindex_logs
-- (customized VCF) Get a custom vcf, transform it to bed
+- (customized VCF) Get a custom vcf, sort it and index it for IGV view
   E.g., /seq/epiprod/de/refdata/dbSNP/C57.CAST.vcf
   (I first tried igvtools sort and index and got an error cause of lines w/o alt field so I run)
   python filter_out_lines_VCF_noALT.py  (script in /seq/epiprod/de/refdata/dbSNP/)
-  Then convert sorted it:
-
+  Then sort it and index it:
+  ~/bin/IGVTools/igvtools sort /seq/epiprod/de/refdata/dbSNP/C57.CAST.filternoALT.vcf /seq/epiprod/de/refdata/dbSNP/C57.CAST.filternoALT.igvsort.vcf
+  ~/bin/IGVTools/igvtools index /seq/epiprod/de/refdata/dbSNP/C57.CAST.filternoALT.igvsort.vcf
+- (customized VCF) Get a custom vcf, transform it to bed (automatically sorted for bedops) for later use with bedops:bedmap
+  python vcf2bed_wrapper.py -i /seq/epiprod/de/refdata/dbSNP/C57.CAST.filternoALT.igvsort.vcf -o /seq/epiprod/de/refdata/dbSNP/C57.CAST.filternoALT.igvsort.vcf.bed -l /seq/epiprod/de/refdata/dbSNP/vcf2bed_wrapper_logs
+- (phased bam files) Transform phased bam files to bed files (bamfiles are sorted by read id so we need to sort the bed)
+  phased bam to two beds, paternal and maternal, sort them, and erase the unsorted ones
+  python phasedBam2bed_wrapper.py -d /seq/epiprod/de/data/doe/tmp_and_rescue/doe_cerebellum_single_phasedBam.csv -i /broad/hptmp/de/data/FF1i1_ad -o /broad/hptmp/de/data/FF1i1_ad/bam2bed --header_name_of_exp_id name -e .phased.merged.bam -l /broad/hptmp/de/data/FF1i1_ad/bam2bed_logs -s -x
+- Get the AVG reads per SNP
+  Here different averages could be taken.
+  Case I.   single replicate.
+    
+  Case II.  cross, age
+  Case III. age
