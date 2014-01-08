@@ -11,7 +11,8 @@ import execs_commands
 SCRIPTS = '/seq/epiprod/de/scripts/nimrod/'
 dependencies_list = ['.fastqc-0.10.1']
 
-def run_fastqc(doe_csv_fn, out_dir, logs_dir, header_name_of_in_fn, extension_name, in_dir):
+def run_fastqc(doe_csv_fn, out_dir, logs_dir, header_name_of_in_fn, extension_name, in_dir, execute):
+    myos.check_if_directory_exists_create_it(out_dir)
     qname = 'regevlab'
     mem_usage = '5000'
     if extension_name is not None:
@@ -26,7 +27,8 @@ def run_fastqc(doe_csv_fn, out_dir, logs_dir, header_name_of_in_fn, extension_na
         runcmd = execs_commands.fastqc(in_fn, out_dir)
         fullcmd = bsubcmd+'\"'+runcmd+'\"'
         print fullcmd
-        os.system(fullcmd)
+        if execute:
+            os.system(fullcmd)
     return 0
 
 def main():
@@ -34,11 +36,12 @@ def main():
     parser.add_option('-d', '--doe_csv_fn', action = "store") 
     parser.add_option('-o', '--out_dir', action = "store") 
     parser.add_option('-l', '--logs_dir', action = "store", help = "a log dir or n for default out_dir+'trimmed/'")
-    parser.add_option('-n', '--header_name_of_in_fn', default = None, action = "store")
+    parser.add_option('-n', '--header_name_of_in_fn', default = None, action = "store", help = "in case extension and in_fn are used it's HEADER_NAME_OF_ID")
     parser.add_option('-e', '--extension_name', action = "store", default = None, help = "i.e., .fastq, .gz, .fq, _trimmed.fastqc, etc. (add the dot if it's a .extn, or add the _ if it's a _ extn) it will run fastqc for each file with such extension in the out_dir; for a single file just do file_name, i.e, MF1i5_P8_trimmed.fastq")
     parser.add_option('-i', '--in_dir', action = "store", help = 'only if extension name is provided one needs an in_dir, otherwise, the in_fn will be read from doe_csv')
+    parser.add_option('-x', '--execute', action = "store_true", default = False)
     (options, args) = parser.parse_args()
-    run_fastqc(options.doe_csv_fn, options.out_dir, options.logs_dir, options.header_name_of_in_fn, options.extension_name, options.in_dir)
+    run_fastqc(options.doe_csv_fn, options.out_dir, options.logs_dir, options.header_name_of_in_fn, options.extension_name, options.in_dir, options.execute)
     return 0
 
 if __name__ == "__main__":
