@@ -37,6 +37,8 @@ Required Files for IGV:
 - (phased bam files) Transform phased bam files to bed files (bamfiles are sorted by read id so we need to sort the bed)
   phased bam to two beds, paternal and maternal, sort them, and erase the unsorted ones
   python phasedBam2bed_wrapper.py -d /seq/epiprod/de/data/doe/tmp_and_rescue/doe_cerebellum_single_phasedBam.csv -i /broad/hptmp/de/data/FF1i1_ad -o /broad/hptmp/de/data/FF1i1_ad/bam2bed --header_name_of_exp_id name -e .phased.merged.bam -l /broad/hptmp/de/data/FF1i1_ad/bam2bed_logs -s -x
+  python sortBed_wrapper.py -d /seq/epiprod/de/data/doe/tmp_and_rescue/doe_cerebellum_single_phasedBam.csv -i /broad/hptmp/de/data/FF1i1_ad/bam2bed --header_name_of_exp_id='name' -e .m.bed -l /broad/hptmp/de/data/FF1i1_ad/bam2bed/sortBed_logs -j .m -x
+  python sortBed_wrapper.py -d /seq/epiprod/de/data/doe/tmp_and_rescue/doe_cerebellum_single_phasedBam.csv -i /broad/hptmp/de/data/FF1i1_ad/bam2bed --header_name_of_exp_id='name' -e .p.bed -l /broad/hptmp/de/data/FF1i1_ad/bam2bed/sortBed_logs -j .p -x
 - Get the AVG reads per SNP
   Here different averages could be taken.
   Case I.   single replicate.
