@@ -103,9 +103,9 @@ def create_bsub_string_rm_logs_dir(logs_dir, job_name, out_log_fn='', err_log_fn
             s = 'bsub -P epigenome -R "rusage[mem=%s]" -q %s -J %s -o %s -e %s ' %(mem_usage, qname, job_name, out_log_fn, err_log_fn)
     elif server == 'odyssey':
         if mem_usage == 'default':
-          s = 'sbatch -J %s -o %s -e %s -p general --wrap=' %(job_name, out_log_fn, err_log_fn)
+          s = 'sbatch -J %s -o %s -e %s -p general --reservation=liu --wrap=' %(job_name, out_log_fn, err_log_fn)
         else:
-          s = 'sbatch -J %s -o %s -e %s -p general --mem=%s --wrap=' %(job_name, out_log_fn, err_log_fn, mem_usage)
+          s = 'sbatch -J %s -o %s -e %s -p general --reservation=liu --mem=%s --wrap=' %(job_name, out_log_fn, err_log_fn, mem_usage)
     check_if_directory_exists_create_it(logs_dir)
     remove_all_files_given_dir(logs_dir)
     erase_file_if_exists(out_log_fn)
@@ -127,9 +127,9 @@ def create_bsub_string_no_rm_logs_dir(logs_dir, job_name, out_log_fn='', err_log
         s = 'bsub -P epigenome -R "rusage[mem=%s]" -q %s -J %s -o %s -e %s ' %(mem_usage, qname, job_name, out_log_fn, err_log_fn)
     elif server == 'odyssey':
       if mem_usage == 'default':
-        s = 'sbatch -J %s -o %s -e %s -p general --wrap=' %(job_name, out_log_fn, err_log_fn)
+        s = 'sbatch -J %s -o %s -e %s -p general --reservation=liu --wrap=' %(job_name, out_log_fn, err_log_fn)
       else:
-        s = 'sbatch -J %s -o %s -e %s -p general --mem=%s --wrap=' %(job_name, out_log_fn, err_log_fn, mem_usage)
+        s = 'sbatch -J %s -o %s -e %s -p general --reservation=liu --mem=%s --wrap=' %(job_name, out_log_fn, err_log_fn, mem_usage)
     check_if_directory_exists_create_it(logs_dir)
     erase_file_if_exists(out_log_fn)
     erase_file_if_exists(err_log_fn)
